@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: cleftranscriber-live
+    runtime: static
+    buildCommand: ""
+    staticPublishPath: ./

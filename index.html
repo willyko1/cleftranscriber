@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="ClefTranscriber live transcription dashboard" />
+  <title>ClefTranscriber | Live Transcription</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="site-header">
+      <a class="brand" href="#" aria-label="ClefTranscriber">
+        <span class="brand-mark">
+          <svg viewBox="0 0 40 40" class="brand-icon" aria-label="Clef">
+            <path d="M15 7C10 8 8 12 8 14C8 14 12 12 15 16C17 18 18 20 18 22C18 26 16 29 13 31C15 30 17 29 19 28C20 26 20 24 20 22C20 19 20 17 21 15C23 16 26 17 30 16C28 12 26 8 24 7C22 8 20 9 18 10C17 9 16 8 15 7Z" />
+            <path d="M25 11C30 12 31 17 30 20C29 24 26 25 24 23C26 23 27 21 27 19C27 16 26 14 25 11Z" />
+          </svg>
+        </span>
+        <span class="brand-text">ClefTranscriber</span>
+      </a>
+
+      <nav class="main-nav" aria-label="Main navigation">
+        <a class="nav-link active" href="#">Platform</a>
+        <a class="nav-link" href="#">Workflow</a>
+        <a class="nav-link" href="#">Security</a>
+        <a class="nav-link" href="#">Pricing</a>
+      </nav>
+
+      <a class="header-cta" href="#demo">
+        <span class="cta-label">Live demo</span>
+        <svg class="arrow-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 12h16M13 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </a>
+    </header>
+
+    <main>
+      <section class="hero">
+        <section class="hero-copy">
+          <div class="section-tag">
+            <span class="pulse-dot"></span>
+            <span>Live transcription cloud</span>
+          </div>
+          <h1>Turn spoken words into structured knowledge.</h1>
+          <p class="hero-subtitle">
+            Convert recordings, meetings, interviews, and field notes into fast,
+            searchable transcripts with human-grade clarity.
+          </p>
+
+          <div class="hero-actions">
+            <a class="primary-button" href="#demo">
+              <span>Create a live session</span>
+              <svg viewBox="0 0 24 24" class="button-icon" aria-hidden="true">
+                <path d="M5 12h14M13 3l9 9-9 9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </a>
+            <a class="secondary-button" href="#workflow">
+              <span>See workflow</span>
+            </a>
+          </div>
+
+          <div class="hero-proof">
+            <div>
+              <span class="proof-number">99.7%</span>
+              <span class="proof-label">accuracy target</span>
+            </div>
+            <div>
+              <span class="proof-number">2.8m</span>
+              <span class="proof-label">audio analyzed</span>
+            </div>
+            <div>
+              <span class="proof-number">24/7</span>
+              <span class="proof-label">processing</span>
+            </div>
+          </div>
+        </section>
+
+        <aside class="hero-panel" id="demo">
+          <div class="panel-top">
+            <div>
+              <span class="panel-label">Live Session</span>
+              <span class="panel-title">Project Alpha</span>
+            </div>
+            <span class="status-pill">
+              <span class="status-light"></span>
+              Recording
+            </span>
+          </div>
+
+          <div class="signal-card">
+            <div class="signal-line">
+              <span class="signal-label">Input signal</span>
+              <span class="signal-value">+01:32:18</span>
+            </div>
+            <div class="signal-bars" aria-label="Audio activity">
+              <span class="bar bar-a"></span>
+              <span class="bar bar-b"></span>
+              <span class="bar bar-c"></span>
+              <span class="bar bar-d"></span>
+              <span class="bar bar-e"></span>
+              <span class="bar bar-a"></span>
+              <span class="bar bar-b"></span>
+              <span class="bar bar-c"></span>
+              <span class="bar bar-d"></span>
+              <span class="bar bar-e"></span>
+              <span class="bar bar-a"></span>
+              <span class="bar bar-b"></span>
+              <span class="bar bar-c"></span>
+            </div>
+          </div>
+
+          <div class="transcript-card">
+            <div class="transcript-meta">
+              <span class="meta-label">Transcript</span>
+              <span class="meta-tag">
+                <span class="meta-signal"></span>
+                live
+              </span>
+            </div>
+            <div class="transcript-feed" id="transcriptFeed">
+              <div class="feed-line">
+                <span class="speaker">Avery</span>
+                <span class="feed-text">The launch brief is ready for review.</span>
+              </div>
+              <div class="feed-line">
+                <span class="speaker">Morgan</span>
+                <span class="feed-text">We need the final transcript and cleanup pass.</span>
+              </div>
+              <div class="feed-line">
+                <span class="speaker">Avery</span>
+                <span class="feed-text">I’ll publish the updated knowledge layer.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel-grid">
+            <div class="panel-stat">
+              <span class="panel-stat-label">Words</span>
+              <span class="panel-stat-value" id="wordCount">842</span>
+            </div>
+            <div class="panel-stat">
+              <span class="panel-stat-label">Speaker map</span>
+              <span class="panel-stat-value">03</span>
+            </div>
+            <div class="panel-stat">
+              <span class="panel-stat-label">Health</span>
+              <span class="panel-stat-value success">Ready</span>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="metrics-strip">
+        <div class="metric-card">
+          <span class="metric-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 18h16M7 14l4-4 4 4 4-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </span>
+          <span>
+            <span class="metric-value">37%</span>
+            <span class="metric-label">faster review</span>
+          </span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 6h16v12H4z" fill="none" stroke="currentColor" stroke-width="2" />
+              <path d="M4 18l5-5 4 4 5-5 3 3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </span>
+          <span>
+            <span class="metric-value">42k+</span>
+            <span class="metric-label">sessions indexed</span>
+          </span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 3a9 9 0 0 0 0 18 9 9 0 0 0 0-18z" fill="none" stroke="currentColor" stroke-width="2" />
+              <path d="M12 7h.01M12 11l4 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+          </span>
+          <span>
+            <span class="metric-value">01s</span>
+            <span class="metric-label">processing latency</span>
+          </span>
+        </div>
+      </section>
+
+      <section class="workflow" id="workflow">
+        <div class="section-heading center">
+          <span class="section-tag compact">Workflow</span>
+          <h2>From audio to insight.</h2>
+        </div>
+
+        <div class="workflow-grid">
+          <article class="workflow-card">
+            <span class="workflow-number">01</span>
+            <h3>Capture</h3>
+            <p>Upload recordings or stream from your meeting room, field kit, or desk.</p>
+            <div class="workflow-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 3a7 7 0 0 0-7 7v2a7 7 0 0 0 14 0V10a7 7 0 0 0-7-7z" fill="none" stroke="currentColor" stroke-width="2" />
+                <path d="M12 18v3M8 21h8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+            </div>
+          </article>
+
+          <article class="workflow-card">
+            <span class="workflow-number">02</span>
+            <h3>Transcribe</h3>
+            <p>Produce a clean transcript with speaker separation and punctuation.</p>
+            <div class="workflow-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M5 5h14v6H5zM5 13h14v6H5z" fill="none" stroke="currentColor" stroke-width="2" />
+              </svg>
+            </div>
+          </article>
+
+          <article class="workflow-card">
+            <span class="workflow-number">03</span>
+            <h3>Structure</h3>
+            <p>Create action items, summaries, searchable topics, and ready-to-share notes.</p>
+            <div class="workflow-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 5h16v4H4zM4 15h16v4H4z" fill="none" stroke="currentColor" stroke-width="2" />
+              </svg>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="security">
+        <div class="security-copy">
+          <span class="section-tag compact">Operating layer</span>
+          <h2>Trusted by teams that move fast.</h2>
+          <p>
+            Every project includes secure workspace controls, timestamped transcript output,
+            and delivery pipelines that work for research, operations, and production teams.
+          </p>
+          <div class="security-list">
+            <div class="security-item">
+              <span class="check-icon">✓</span>
+              <span>Encrypted workflow by default</span>
+            </div>
+            <div class="security-item">
+              <span class="check-icon">✓</span>
+              <span>Export-ready transcript formats</span>
+            </div>
+            <div class="security-item">
+              <span class="check-icon">✓</span>
+              <span>Speaker-aware summaries</span>
+            </div>
+          </div>
+          <a class="secondary-button dark" href="#">
+            <span>Explore secure workflows</span>
+          </a>
+        </div>
+
+        <div class="security-panel">
+          <div class="security-card">
+            <div class="security-card-top">
+              <span class="security-label">Workspace health</span>
+              <span class="security-status">
+                <span class="status-light small"></span>
+                Online
+              </span>
+            </div>
+            <div class="security-chart">
+              <div class="chart-line">
+                <span class="chart-point"></span>
+                <span class="chart-line-row">
+                  <span class="chart-row-label">capture</span>
+                  <span class="chart-bar-wrap">
+                    <span class="chart-bar bar-one"></span>
+                  </span>
+                </span>
+              </div>
+              <div class="chart-line">
+                <span class="chart-point"></span>
+                <span class="chart-line-row">
+                  <span class="chart-row-label">align</span>
+                  <span class="chart-bar-wrap">
+                    <span class="chart-bar bar-two"></span>
+                  </span>
+                </span>
+              </div>
+              <div class="chart-line">
+                <span class="chart-point"></span>
+                <span class="chart-line-row">
+                  <span class="chart-row-label">review</span>
+                  <span class="chart-bar-wrap">
+                    <span class="chart-bar bar-three"></span>
+                  </span>
+                </span>
+              </div>
+              <div class="chart-line">
+                <span class="chart-point"></span>
+                <span class="chart-line-row">
+                  <span class="chart-row-label">publish</span>
+                  <span class="chart-bar-wrap">
+                    <span class="chart-bar bar-four"></span>
+                  </span>
+                </span>
+              </div>
+            </div>
+            <div class="security-meta">
+              <div>
+                <span class="security-meta-label">Sync</span>
+                <span class="security-meta-value">Live</span>
+              </div>
+              <div>
+                <span class="security-meta-label">Retention</span>
+                <span class="security-meta-value">180d</span>
+              </div>
+              <div>
+                <span class="security-meta-label">Mode</span>
+                <span class="security-meta-value">Human + AI</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="cta">
+        <div class="cta-card">
+          <div>
+            <span class="section-tag compact light-tag">Launch workspace</span>
+            <h2>Bring clarity to every recording.</h2>
+          </div>
+          <a class="primary-button light-button" href="#demo">
+            <span>Request a live demo</span>
+            <svg viewBox="0 0 24 24" class="button-icon" aria-hidden="true">
+              <path d="M5 12h14M13 3l9 9-9 9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <a class="brand small-brand" href="#">
+        <span class="brand-mark">
+          <svg viewBox="0 0 40 40" class="brand-icon" aria-label="Clef">
+            <path d="M15 7C10 8 8 12 8 14C8 14 12 12 15 16C17 18 18 20 18 22C18 26 16 29 13 31C15 30 17 29 19 28C20 26 20 24 20 22C20 19 20 17 21 15C23 16 26 17 30 16C28 12 26 8 24 7C22 8 20 9 18 10C17 9 16 8 15 7Z" />
+            <path d="M25 11C30 12 31 17 30 20C29 24 26 25 24 23C26 23 27 21 27 19C27 16 26 14 25 11Z" />
+          </svg>
+        </span>
+        <span class="brand-text">ClefTranscriber</span>
+      </a>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="#">Platform</a>
+        <a href="#">Integrations</a>
+        <a href="#">Security</a>
+        <a href="#">Pricing</a>
+      </nav>
+      <span class="copyright">© 2026 ClefTranscriber</span>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
+</body>
+</html>
