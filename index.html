@@ -110,6 +110,30 @@
             </div>
           </div>
 
+          <div class="image-upload" id="imageUpload">
+            <input class="image-upload-input" id="imageInput" type="file" accept="image/*" />
+            <label class="image-upload-label" for="imageInput">
+              <span class="upload-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 16V4M7 9l5-5 5 5M5 14v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </span>
+              <span>
+                <strong>Upload an image</strong>
+                <span>Choose a file or drag it here</span>
+              </span>
+            </label>
+            <div class="image-upload-result" id="imageUploadResult" aria-live="polite" hidden>
+              <img id="imagePreview" alt="Selected image preview" />
+              <span class="image-upload-details">
+                <strong id="imageFileName"></strong>
+                <span id="imageFileSize"></span>
+              </span>
+              <button class="image-remove" id="imageRemove" type="button" aria-label="Remove selected image">Remove</button>
+            </div>
+            <p class="image-upload-message" id="imageUploadMessage" role="status"></p>
+          </div>
+
           <div class="transcript-card">
             <div class="transcript-meta">
               <span class="meta-label">Transcript</span>
