@@ -1,0 +1,6 @@
+fastapi==0.115.6
+music21==9.7.1
+oemer==0.1.8
+python-multipart==0.0.20
+uvicorn[standard]==0.34.0
+verovio==6.3.0
