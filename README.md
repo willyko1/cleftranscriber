@@ -26,3 +26,12 @@ services:
 ```
 
 Create a new Render Web Service using the repository and point the publish directory to the project root if Render asks for a build path.
+
+## Sheet music transcription API
+
+The browser sends an uploaded sheet music image to `POST /api/transcribe` with a multipart form containing:
+
+- `sheetMusic`: the uploaded image
+- `clef`: `treble`, `alto`, `tenor`, or `bass`
+
+The endpoint should return the transcribed sheet music as an image response. The static frontend displays that response in the output panel.

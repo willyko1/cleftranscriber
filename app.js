@@ -7,6 +7,13 @@ const imageFileName = document.getElementById('imageFileName');
 const imageFileSize = document.getElementById('imageFileSize');
 const imageUploadMessage = document.getElementById('imageUploadMessage');
 const imageRemove = document.getElementById('imageRemove');
+const clefSelect = document.getElementById('clefSelect');
+const transcribeButton = document.getElementById('transcribeButton');
+const transcriptionResult = document.getElementById('transcriptionResult');
+const transcriptionOutput = document.getElementById('transcriptionOutput');
+const transcriptionClef = document.getElementById('transcriptionClef');
+let selectedImageFile = null;
+let outputObjectUrl = null;
 const feedLines = [
   { speaker: 'Avery', text: 'The launch brief is ready for review.' },
   { speaker: 'Morgan', text: 'We need the final transcript and cleanup pass.' },
@@ -53,6 +60,13 @@ function clearImageUpload() {
   if (imagePreview) imagePreview.removeAttribute('src');
   if (imageUploadResult) imageUploadResult.hidden = true;
   if (imageUploadMessage) imageUploadMessage.textContent = '';
+  selectedImageFile = null;
+  if (transcribeButton) transcribeButton.disabled = true;
+  if (transcriptionResult) transcriptionResult.hidden = true;
+  if (transcriptionOutput?.src.startsWith('blob:')) {
+    URL.revokeObjectURL(transcriptionOutput.src);
+  }
+  if (transcriptionOutput) transcriptionOutput.removeAttribute('src');
 }
 
 function displayImage(file) {
@@ -71,11 +85,44 @@ function displayImage(file) {
   }
 
   clearImageUpload();
+  selectedImageFile = file;
   imagePreview.src = URL.createObjectURL(file);
   if (imageFileName) imageFileName.textContent = file.name;
   if (imageFileSize) imageFileSize.textContent = formatFileSize(file.size);
   imageUploadResult.hidden = false;
+  if (transcribeButton) transcribeButton.disabled = false;
   if (imageUploadMessage) imageUploadMessage.textContent = 'Image ready to use.';
+}
+
+async function transcribeSheetMusic() {
+  if (!selectedImageFile || !clefSelect || !transcribeButton) return;
+
+  const formData = new FormData();
+  formData.append('sheetMusic', selectedImageFile);
+  formData.append('clef', clefSelect.value);
+  transcribeButton.disabled = true;
+  transcribeButton.classList.add('is-loading');
+  if (imageUploadMessage) imageUploadMessage.textContent = 'Transcribing sheet music...';
+
+  try {
+    const response = await fetch('/api/transcribe', { method: 'POST', body: formData });
+    if (!response.ok) throw new Error('Transcription service unavailable.');
+
+    const outputBlob = await response.blob();
+    if (outputObjectUrl) URL.revokeObjectURL(outputObjectUrl);
+    outputObjectUrl = URL.createObjectURL(outputBlob);
+    if (transcriptionOutput) transcriptionOutput.src = outputObjectUrl;
+    if (transcriptionClef) {
+      transcriptionClef.textContent = clefSelect.options[clefSelect.selectedIndex].text;
+    }
+    if (transcriptionResult) transcriptionResult.hidden = false;
+    if (imageUploadMessage) imageUploadMessage.textContent = 'Transcription complete.';
+  } catch (error) {
+    if (imageUploadMessage) imageUploadMessage.textContent = error.message;
+  } finally {
+    transcribeButton.disabled = false;
+    transcribeButton.classList.remove('is-loading');
+  }
 }
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -97,6 +144,7 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
   imageRemove?.addEventListener('click', clearImageUpload);
+  transcribeButton?.addEventListener('click', transcribeSheetMusic);
 
   imageUpload?.addEventListener('dragover', (event) => {
     event.preventDefault();
