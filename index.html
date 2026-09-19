@@ -134,6 +134,32 @@
             <p class="image-upload-message" id="imageUploadMessage" role="status"></p>
           </div>
 
+          <div class="clef-transcriber" id="clefTranscriber">
+            <div class="clef-control">
+              <label for="clefSelect">Transcribe to</label>
+              <select id="clefSelect">
+                <option value="treble">Treble clef</option>
+                <option value="alto">Alto clef</option>
+                <option value="tenor">Tenor clef</option>
+                <option value="bass">Bass clef</option>
+              </select>
+            </div>
+            <button class="transcribe-button" id="transcribeButton" type="button" disabled>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 7h16M4 12h10M4 17h16M17 10l3 2-3 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <span>Transcribe sheet music</span>
+            </button>
+          </div>
+
+          <div class="transcription-result" id="transcriptionResult" aria-live="polite" hidden>
+            <div class="transcript-meta">
+              <span class="meta-label">Transcribed output</span>
+              <span class="meta-tag" id="transcriptionClef">Treble clef</span>
+            </div>
+            <img id="transcriptionOutput" alt="Transcribed sheet music output" />
+          </div>
+
           <div class="transcript-card">
             <div class="transcript-meta">
               <span class="meta-label">Transcript</span>

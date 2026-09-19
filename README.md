@@ -1,14 +1,13 @@
 # cleftranscriber
 
-ClefTranscriber is a sheet music image transcription service that converts uploaded scores into MusicXML and renders them in a selected clef.
+ClefTranscriber is a static landing/dashboard experience for a live transcription product.
 
 ## Local development
 
-Install dependencies and run the API/frontend locally:
+Serve the workspace locally:
 
 ```bash
-python3 -m pip install -r requirements.txt
-uvicorn server:app --reload --port 8000
+python3 -m http.server 8000
 ```
 
 Then visit <http://127.0.0.1:8000>.
@@ -35,10 +34,4 @@ The browser sends an uploaded sheet music image to `POST /api/transcribe` with a
 - `sheetMusic`: the uploaded image
 - `clef`: `treble`, `alto`, `tenor`, or `bass`
 
-The endpoint runs this pipeline:
-
-1. Oemer recognizes the uploaded score as MusicXML.
-2. Music21 applies the selected target clef.
-3. Verovio renders the resulting MusicXML as an SVG image.
-
-The API returns that SVG image to the frontend. OMR is CPU-intensive and may take several minutes for a large or low-quality score.
+The endpoint should return the transcribed sheet music as an image response. The static frontend displays that response in the output panel.
