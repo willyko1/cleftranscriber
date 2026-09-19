@@ -44,4 +44,4 @@ window.addEventListener('DOMContentLoaded', () => {
       wordCountEl.textContent = words;
     }, 900);
   }
-});
+
