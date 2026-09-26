@@ -14,6 +14,7 @@ const transcriptionOutput = document.getElementById('transcriptionOutput');
 const transcriptionClef = document.getElementById('transcriptionClef');
 let selectedImageFile = null;
 let outputObjectUrl = null;
+let isTranscribing = false;
 const feedLines = [
   { speaker: 'Avery', text: 'The launch brief is ready for review.' },
   { speaker: 'Morgan', text: 'We need the final transcript and cleanup pass.' },
@@ -52,6 +53,7 @@ function formatFileSize(bytes) {
 }
 
 function clearImageUpload() {
+  if (isTranscribing) return;
   if (imagePreview?.src.startsWith('blob:')) {
     URL.revokeObjectURL(imagePreview.src);
   }
@@ -67,20 +69,22 @@ function clearImageUpload() {
     URL.revokeObjectURL(transcriptionOutput.src);
   }
   if (transcriptionOutput) transcriptionOutput.removeAttribute('src');
+  outputObjectUrl = null;
 }
 
 function displayImage(file) {
+  if (isTranscribing) return;
   if (!file || !imagePreview || !imageUploadResult) return;
 
-  if (!file.type.startsWith('image/')) {
+  if (!['image/png', 'image/jpeg', 'image/webp'].includes(file.type)) {
     clearImageUpload();
-    if (imageUploadMessage) imageUploadMessage.textContent = 'Please choose an image file.';
+    if (imageUploadMessage) imageUploadMessage.textContent = 'Please choose a PNG, JPEG, or WebP image.';
     return;
   }
 
-  if (file.size > 10 * 1024 * 1024) {
+  if (!file.size || file.size > 4 * 1024 * 1024) {
     clearImageUpload();
-    if (imageUploadMessage) imageUploadMessage.textContent = 'Images must be smaller than 10 MB.';
+    if (imageUploadMessage) imageUploadMessage.textContent = 'Images must be nonempty and 4 MB or smaller.';
     return;
   }
 
@@ -95,18 +99,32 @@ function displayImage(file) {
 }
 
 async function transcribeSheetMusic() {
-  if (!selectedImageFile || !clefSelect || !transcribeButton) return;
+  if (isTranscribing || !selectedImageFile || !clefSelect || !transcribeButton) return;
 
   const formData = new FormData();
   formData.append('sheetMusic', selectedImageFile);
   formData.append('clef', clefSelect.value);
+  isTranscribing = true;
+  imageInput.disabled = true;
+  imageRemove.disabled = true;
+  clefSelect.disabled = true;
+  if (transcriptionResult) transcriptionResult.hidden = true;
   transcribeButton.disabled = true;
   transcribeButton.classList.add('is-loading');
   if (imageUploadMessage) imageUploadMessage.textContent = 'Transcribing sheet music...';
 
   try {
-    const response = await fetch('/api/transcribe', { method: 'POST', body: formData });
-    if (!response.ok) throw new Error('Transcription service unavailable.');
+    const response = await fetch('/api/transcribe', {
+      method: 'POST', body: formData, signal: AbortSignal.timeout(60_000)
+    });
+    if (!response.ok) {
+      const details = await response.json().catch(() => ({}));
+      throw new Error(details.error || (response.status === 413
+        ? 'Images must be 4 MB or smaller.' : 'Transcription service unavailable.'));
+    }
+    if (!['image/png', 'image/jpeg', 'image/webp'].includes(response.headers.get('content-type')?.split(';')[0].trim())) {
+      throw new Error('The service did not return a sheet-music image.');
+    }
 
     const outputBlob = await response.blob();
     if (outputObjectUrl) URL.revokeObjectURL(outputObjectUrl);
@@ -118,8 +136,13 @@ async function transcribeSheetMusic() {
     if (transcriptionResult) transcriptionResult.hidden = false;
     if (imageUploadMessage) imageUploadMessage.textContent = 'Transcription complete.';
   } catch (error) {
-    if (imageUploadMessage) imageUploadMessage.textContent = error.message;
+    if (imageUploadMessage) imageUploadMessage.textContent = error.name === 'TimeoutError'
+      ? 'Transcription took too long. Please try a smaller image.' : error.message;
   } finally {
+    isTranscribing = false;
+    imageInput.disabled = false;
+    imageRemove.disabled = false;
+    clefSelect.disabled = false;
     transcribeButton.disabled = false;
     transcribeButton.classList.remove('is-loading');
   }
@@ -161,4 +184,3 @@ window.addEventListener('DOMContentLoaded', () => {
     displayImage(event.dataTransfer.files[0]);
   });
 });
-
